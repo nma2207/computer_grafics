@@ -1,9 +1,7 @@
 import Blender
 from Blender import Draw, BGL
 from Blender.BGL import *
-import time
-x=0
-y=0
+#Bresenhems algorithm for lines
 def event(evt, val):
     if evt == Draw.ESCKEY :
         Draw.Exit()
@@ -12,33 +10,34 @@ def event(evt, val):
 def gui():
 	sw=False
 	glClearColor(0,0,0,1)
-	glPointSize(2)
+	global width
+	glPointSize(width)
 	glClear(BGL.GL_COLOR_BUFFER_BIT)
 	glColor3f(0,0,1)
 	glBegin(GL_POINTS)
+	global x0,x1,y0,y1
+	if x0>x1:
+		x0,x1=x1,x0
+		y0,y1=y1,y0
 	dx=x1-x0
 	dy=y1-y0
-	x2=x1-x0
-	y2=y1-y0
+	y=0
 	sign=1
 	if y1<y0:
 		sign=-1
 		dy=-dy
-		y2=-y2
-	if y2>x2:
-		y2,x2=x2,y2
-		dx,dy=dy,dx
+	if dy>dx:
+		dy,dx=dx,dy
 		sw=True
+
+
 	err=0
-	print x2
-	print y2
 	derr=dy
-	y=0
-	for x in range(0,x2+1):
+	for x in range(dx+1):
 		px,py=0,0
 
 		if sw==True:
-			px,py=y+y0,x+x0
+			px,py=sign*y+x0,sign*x+y0
 		else:
 			px,py=x+x0,y+y0
 		glVertex2i(px,py)
@@ -48,9 +47,10 @@ def gui():
 			err-=dx
 	glEnd()
 
-print 'write points,please'
-x0=int(raw_input())
-y0=int(raw_input())
-x1=int(raw_input())
-y1=int(raw_input())
+print 'write points and width,please'
+x0=int(raw_input('x0='))
+y0=int(raw_input('y0='))
+x1=int(raw_input('x1='))
+y1=int(raw_input('y1='))
+width=int(raw_input('width='))
 Draw.Register(gui,event,None)
