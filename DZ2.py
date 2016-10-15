@@ -54,8 +54,8 @@ def gui():
 
 
 
-def button_event(evt): 
-	global x0,y0,x1,y1,width,Ais_line_point
+def button_event(evt):
+	global x0,y0,x1,y1,width,is_line_point
   	if evt == 1:
 		x_start=Draw.Create(0)
 		y_start=Draw.Create(0)
