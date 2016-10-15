@@ -43,15 +43,41 @@ def drawline(x0,y0,x1,y1,width):
 
 
 def gui():
-	glClearColor(0,0,0,1)
-	glClear(BGL.GL_COLOR_BUFFER_BIT)
-	global width,x0,x1,y0,y1
-	drawline(x0,y0,x1,y1,width)
+	global x0,y0,x1,y1,width,is_line_point
+	print is_line_point
+	if is_line_point==False:
+		Draw.PushButton("Write points and width",1,100,100,200,50,"Write point and width of line,please")
+	else:
+		glClearColor(0,0,0,1)
+		glClear(BGL.GL_COLOR_BUFFER_BIT)
+		drawline(x0,y0,x1,y1,width)
 
-print 'write points and width,please'
-x0=int(raw_input('x0='))
-y0=int(raw_input('y0='))
-x1=int(raw_input('x1='))
-y1=int(raw_input('y1='))
-width=int(raw_input('width='))
-Draw.Register(gui,event,None)
+
+
+def button_event(evt): 
+	global x0,y0,x1,y1,width,Ais_line_point
+  	if evt == 1:
+		x_start=Draw.Create(0)
+		y_start=Draw.Create(0)
+		x_end=Draw.Create(0)
+		y_end=Draw.Create(0)
+		width_line=Draw.Create(0)
+		block=[]
+		block.append(("X0= ",x_start,0,800))
+		block.append(("Y0= ",y_start,0,800))
+		block.append(("X1= ",x_end,0,800))
+		block.append(("Y1= ",y_end,0,800))
+		block.append(("width= ",width_line,1,20))
+		retVal=Draw.PupBlock("Line coords",block)
+		x0=x_start.val
+		y0=y_start.val
+		x1=x_end.val
+		y1=y_end.val
+		width=width_line.val
+		print x0,y0,x1,y1,width
+		is_line_point=True
+		Draw.Redraw(1)
+		return
+
+is_line_point=False
+Draw.Register(gui, event, button_event)
