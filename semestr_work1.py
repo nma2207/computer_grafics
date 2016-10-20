@@ -9,8 +9,8 @@ y_circle=[]
 
 def circle_coords(R,center):
 	global x_circle, y_circle
-	n=1000
-	dx=2*R/1000
+	n=100
+	dx=2*R/n
 	for i in range(n+1):
 		x_circle.append(dx*i+center[0]-R)
 		y_circle.append((R*R-(dx*i-R)**2)**0.5+center[1])
@@ -60,6 +60,13 @@ def gui():
 	counter(x0,x1,R,1)
 	for i in range(len(x_circle)):
 		glVertex2f(x_circle[i],y_circle[i])
+		print x_circle[i],y_circle[i]
+	glEnd()
+	glBegin(GL_LINE_LOOP)
+	counter(x0,x1,R,-1)
+	for i in range(len(x_circle)):
+		glVertex2f(x_circle[i],y_circle[i])
+		print x_circle[i],y_circle[i]
 	glEnd()
 	glColor3f(0, 1.0, 0.5)
 	glPointSize(5)
@@ -83,4 +90,4 @@ if(dist_p_to_p_sqr(x0,x1)>4*R*R):
 	for i in range(n+1):
 		print i*dx-5
 else:
-	Draw.Register(gui, event,None)  
+	Draw.Register(gui, event,None)
