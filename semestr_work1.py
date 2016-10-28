@@ -6,7 +6,7 @@ import math
 
 x_circle=[]
 y_circle=[]
-is_draw=False
+is_draw=1
 
 def changeR():
 	global R
@@ -34,7 +34,7 @@ def event(evt, val):
 	if evt == Draw.ESCKEY :
 		Draw.Exit()
 	if evt==Draw.RKEY:
-		is_draw=False
+		is_draw=1
 		Draw.Register(gui, event,button_event)
 
 		return
@@ -68,14 +68,15 @@ def counter(x0,x1,R,sign):
 
 def dist_p_to_p_sqr(x0,x1):
 	return (x1[0]-x0[0])**2+(x1[1]-x0[1])**2
+
 def gui():
 	global x_circle,y_circle,x0,x1,R, is_draw
-	if is_draw==False:
+	if is_draw==1:#we make PupBlock
+		glClear(GL_COLOR_BUFFER_BIT)
 		Draw.PushButton("Write points and R",1,100,100,200,50,"Write point and raduis,please")
 		glRasterPos2f(100.0,200.0)
 		Draw.Text("Press ESC to exit and R to restart")
-
-	else:
+	elif is_draw==2:#we draw circles
 		glClearColor(0,0,0,1)
  		glClear(GL_COLOR_BUFFER_BIT)
 		glLineWidth(2)
@@ -98,43 +99,37 @@ def gui():
 		glVertex2f(x1[0],x1[1])
 		glEnd()
 		changeR()
+	elif is_draw==3:#error: diametr is less distance between points
+		glClear(GL_COLOR_BUFFER_BIT)
+		glColor3f(1.0,0,0)
+		glRasterPos2f(100.0,200.0)
+		Draw.Text("ERROR! Diametr of cicle is less distance between points!!!!   Press ESC to exit and R to restart")
 
 def button_event(evt):
 	global x0,x1,R, is_draw
   	if evt == 1:
 
-		x_start=Draw.Create(0)
-		y_start=Draw.Create(0)
-		x_end=Draw.Create(0)
-		y_end=Draw.Create(0)
-		R_circle=Draw.Create(0)
+		x_start=Draw.Create(0.0)
+		y_start=Draw.Create(0.0)
+		x_end=Draw.Create(0.0)
+		y_end=Draw.Create(0.0)
+		R_circle=Draw.Create(0.0)
 		block=[]
-		block.append(("X0= ",x_start,0,800))
-		block.append(("Y0= ",y_start,0,800))
-		block.append(("X1= ",x_end,0,800))
-		block.append(("Y1= ",y_end,0,800))
-		block.append(("R= ",R_circle,0,1000))
+		block.append(("X0= ",x_start,0.0,800.0))
+		block.append(("Y0= ",y_start,0.0,800.0))
+		block.append(("X1= ",x_end,0.0,800.0))
+		block.append(("Y1= ",y_end,0.0,800.0))
+		block.append(("R= ",R_circle,0.0,1000.0))
 		retVal=Draw.PupBlock("Line coords",block)
 		x0=[x_start.val, y_start.val]
 		x1=[x_end.val,y_end.val]
 		R=R_circle.val
 		if(dist_p_to_p_sqr(x0,x1)>4*R*R):
-			glRasterPos2f(100.0,200.0)
-			Draw.Text('Your coord is wrong, it is impossible')
+			is_draw=3
 		else:
-			is_draw=True
-			Draw.Redraw(1)
+			is_draw=2
+		Draw.Redraw(1)
 		return
 
 
-#x0=[float(i) for i in raw_input("Write first point\n").split()]
-#while len(x0)!=2:
-#	x0=[float(i) for i in raw_input("Write for  first point 2 coords\n").split()]
-#x1=[int(i) for i in raw_input("Write second point\n").split()]
-#while len(x1)!=2:
-#	x1=[int(i) for i in raw_input("Write for  second point 2 coords\n").split()]
-#R=float(raw_input("Write radius of circle\n"))
-#if(dist_p_to_p_sqr(x0,x1)>4*R*R):
-#	print 'Your coord is wrong, it is impossible'
-#else:
 Draw.Register(gui, event,button_event)
