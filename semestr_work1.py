@@ -1,3 +1,4 @@
+
 import Blender
 from Blender import Draw, BGL
 from Blender.BGL import *
@@ -6,6 +7,7 @@ import math
 
 x_circle=[]
 y_circle=[]
+center =[]
 is_draw=1
 
 def changeR():
@@ -13,10 +15,10 @@ def changeR():
 	R+=1
 	if R>1000:
 		Draw.Exit()
-	time.sleep(0.1)
+	time.sleep(0.01)
 	Draw.Redraw(1)
-def circle_coords(R,center):
-	global x_circle, y_circle
+def circle_coords(R):
+	global x_circle, y_circle,center
 	del x_circle[0:]
 	del y_circle[0:]
 	n=100
@@ -59,18 +61,18 @@ def dPoint(R, n,mid,x0):
 		return [0,math.sqrt(R*R-(x0[0]-mid[0])**2)]
 
 def counter(x0,x1,R,sign):
-	global x_circle,y_circle
+	global x_circle,y_circle,center
 	midl=mid(x0,x1)
 	norm=vector(x0,x1)
 	dp=dPoint(R,norm,midl,x0)
 	center=[midl[0]+sign*dp[0], midl[1]+sign*dp[1]]
-	circle_coords(R,center)
+	circle_coords(R)
 
 def dist_p_to_p_sqr(x0,x1):
 	return (x1[0]-x0[0])**2+(x1[1]-x0[1])**2
 
 def gui():
-	global x_circle,y_circle,x0,x1,R, is_draw
+	global x_circle,y_circle,x0,x1,R, is_draw,center
 	if is_draw==1:#we make PupBlock
 		glClear(GL_COLOR_BUFFER_BIT)
 		Draw.PushButton("Write points and R",1,100,100,200,50,"Write point and raduis,please")
@@ -86,34 +88,56 @@ def gui():
 		for i in range(len(x_circle)):
 			glVertex2f(x_circle[i],y_circle[i])
 		glEnd()
-		glColor3f(0,0,2)
+		glColor3f(0,1.0,0)
+		glBegin(GL_LINE_STRIP)
+		glVertex2f(x0[0],x0[1])
+		glVertex2f(center[0], center[1])
+		glVertex2f(x1[0],x1[1])	
+		glEnd()
+		glColor3f(1.0,1.0,1.0)
+		glPointSize(8)
+		glBegin(GL_POINTS)
+		glVertex2f(center[0],center[1])
+		glEnd()	
+		glColor3f(0,0,1.0)
 		glBegin(GL_LINE_LOOP)
 		counter(x0,x1,R,-1)
 		for i in range(len(x_circle)):
 			glVertex2f(x_circle[i],y_circle[i])
 		glEnd()
+		glColor3f(0,1.0,0)
+		glBegin(GL_LINE_STRIP)
+		glVertex2f(x0[0],x0[1])
+		glVertex2f(center[0], center[1])
+		glVertex2f(x1[0],x1[1])	
+		glEnd()	
 		glColor3f(0, 1.0, 0.5)
 		glPointSize(5)
 		glBegin(GL_POINTS)
 		glVertex2f(x0[0],x0[1])
 		glVertex2f(x1[0],x1[1])
 		glEnd()
+		glColor3f(1.0,1.0,1.0)
+		glPointSize(8)
+		glBegin(GL_POINTS)
+		glVertex2f(center[0],center[1])
+		glEnd()		
 		changeR()
 	elif is_draw==3:#error: diametr is less distance between points
 		glClear(GL_COLOR_BUFFER_BIT)
 		glColor3f(1.0,0,0)
 		glRasterPos2f(100.0,200.0)
-		Draw.Text("ERROR! Diametr of cicle is less distance between points!!!!   Press ESC to exit and R to restart")
+		Draw.Text("ERROR! Diametr of circle is less distance between points!!!!   Press ESC to exit and R to restart")
 
 def button_event(evt):
 	global x0,x1,R, is_draw
   	if evt == 1:
 
-		x_start=Draw.Create(0.0)
-		y_start=Draw.Create(0.0)
-		x_end=Draw.Create(0.0)
-		y_end=Draw.Create(0.0)
-		R_circle=Draw.Create(0.0)
+		x_start=Draw.Create(500.0)
+		y_start=Draw.Create(100.0)
+		x_end=Draw.Create(600.0)
+		y_end=Draw.Create(200.0)
+		R_circle=Draw.Create(80.0)
 		block=[]
 		block.append(("X0= ",x_start,0.0,800.0))
 		block.append(("Y0= ",y_start,0.0,800.0))
