@@ -1,0 +1,77 @@
+import os
+import Blender
+from Blender import Draw
+from Blender.BGL import *
+import time
+from Blender.Mathutils import *
+import math
+from math import sin,cos
+import random
+
+changeColor=False
+c1,c2,c3=0,0,0
+twoPi=2*math.pi
+A=0.0
+k=1.0;
+def changeA():
+	global changeColor,A,k;
+	if A>twoPi:
+		A-=twoPI
+	A+=.2
+	k=1;
+
+
+
+def rotMatr(ang): # ??????? ????????
+	mtr=Matrix([cos(ang),-sin(ang)],[sin(ang),cos(ang)])
+	return mtr
+def sizeChangeMat(k):
+	mtr=Matrix([k,0.0],[0.0,k])
+
+def event(evt, val):
+	if evt == Draw.ESCKEY :
+		Draw.Exit()
+	return
+
+def randomColor():
+	global changeColor,c1,c2,c3;
+	if changeColor==True:
+		c1,c2,c3=random.random(),random.random(),random.random()
+		changeColor=False;
+	glColor3f(c1,c2,c3)
+
+def gui():
+	global k,A,pc0,pc1,pc2,pc3,mid
+	glClearColor(1.0,1.0,1.0,1) # background color
+	glClear(GL_COLOR_BUFFER_BIT) # clear image buffer
+	glColor3f(0,0,0)
+	rotMat=rotMatr(A)
+	sizeMat=sizeChangeMat(k)
+
+	pn0=sizeMat*rotMat*pc0+mid
+	pn1=rotMat*sizeMat*pc1+mid
+	pn2=rotMat*sizeMat*pc2+mid
+	pn3=rotMat*sizeMat*pc3+mid
+	randomColor()
+	Begin(GL_QUADS)
+	glVertex2f(*pn0)
+	glVertex2f(*pn1)
+	glVertex2f(*pn2)
+	glVertex2f(*pn3)
+	glEnd()
+	changeA()
+
+point =[float(i) for i in raw_input("write coord of left top angle:\n").split()]
+a=float(raw_input("write the praty of qard\n"))
+
+p0=Vector(point[0],point[1])
+p1=Vector(point[0]+a,point[1])
+p2=Vector(point[0]+a,point[1]-a)
+p3=Vector(point[0],point[1]-a)
+mid=Vector(point[0]+a/2, point[1]-a/2)
+
+pc0=p0-mid
+pc1=p1-mid
+pc2=p2-mid
+pc3=p3-mid
+Draw.Register(gui, event,None)
