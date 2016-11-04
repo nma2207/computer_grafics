@@ -10,23 +10,33 @@ import random
 
 changeColor=False
 c1,c2,c3=0,0,0
-twoPi=2*math.pi
+colorA=0.0
 A=0.0
 k=1.0;
+
 def changeA():
-	global changeColor,A,k;
-	if A>twoPi:
-		A-=twoPI
-	A+=.2
+	da=.2
+	global changeColor,A,k,colorA;
+	if A>2*math.pi:
+		A-=math.pi*2
+	if colorA>math.pi/2:
+		changeColor=True
+		colorA-=math.pi/2
+	A+=da
+	colorA+=da
+	time.sleep(0.1)
 	k=1;
+	Draw.Redraw(1)
 
 
 
 def rotMatr(ang): # ??????? ????????
 	mtr=Matrix([cos(ang),-sin(ang)],[sin(ang),cos(ang)])
 	return mtr
+
 def sizeChangeMat(k):
 	mtr=Matrix([k,0.0],[0.0,k])
+	return mtr
 
 def event(evt, val):
 	if evt == Draw.ESCKEY :
@@ -35,6 +45,7 @@ def event(evt, val):
 
 def randomColor():
 	global changeColor,c1,c2,c3;
+	print c1,c2,c3
 	if changeColor==True:
 		c1,c2,c3=random.random(),random.random(),random.random()
 		changeColor=False;
@@ -53,12 +64,13 @@ def gui():
 	pn2=rotMat*sizeMat*pc2+mid
 	pn3=rotMat*sizeMat*pc3+mid
 	randomColor()
-	Begin(GL_QUADS)
+	glBegin(GL_QUADS)
 	glVertex2f(*pn0)
 	glVertex2f(*pn1)
 	glVertex2f(*pn2)
 	glVertex2f(*pn3)
 	glEnd()
+	#print (pn0[0]-pn1[0])**2+(pn0[1]-pn1[1])**2
 	changeA()
 
 point =[float(i) for i in raw_input("write coord of left top angle:\n").split()]
