@@ -13,16 +13,16 @@ c1,c2,c3=0,0,0
 colorA=0.0
 signK=1
 signA=1
-rotateA=0.0
 A=0.0
 k=1.0;
 
 def changeA():
-	da=.2
+	da=.025
 	dk=da/(2*math.pi)
-	global changeColor,A,k,colorA,signK,rotateA,signA;
+	global changeColor,A,k,colorA,signK,signA;
 	if A>2*math.pi:
 		A-=math.pi*2
+		signA*=-1
 	if colorA>math.pi/2:
 		changeColor=True
 		colorA-=math.pi/2
@@ -30,7 +30,7 @@ def changeA():
 		signK*=-1
 	A+=da
 	colorA+=da
-	time.sleep(0.1)
+	time.sleep(0.003)
 	k+=signK*dk;
 	#print k
 	Draw.Redraw(1)
@@ -63,7 +63,7 @@ def gui():
 	glClearColor(1.0,1.0,1.0,1) # background color
 	glClear(GL_COLOR_BUFFER_BIT) # clear image buffer
 	glColor3f(0,0,0)
-	rotMat=rotMatr(A)
+	rotMat=rotMatr(signA*A)
 	sizeMat=sizeChangeMat(k)
 
 	pn0=sizeMat*rotMat*pc0+mid
