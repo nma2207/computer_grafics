@@ -79,18 +79,35 @@ def gui():
 	glEnd()
 	print ((pn0[0]-pn1[0])**2+(pn0[1]-pn1[1])**2)**0.5
 	changeA()
+def pupBlock():
+	global pc0,pc1,pc2,pc3,mid
+	x=Draw.Create(500.0)
+	y=Draw.Create(500.0)
+	a=Draw.Create(100.0)
+	block=[]
+	block.append(("X= ", x, 0.0, 1000.0))
+	block.append(("Y= ", y, 0.0, 1000.0))
+	block.append(("a= ", a, 0.1, 1000.0))
+	retVal=Draw.PupBlock("write coord of left top angle, and party of quard",block)
+	mid=Vector(x.val+a.val/2, y.val-a.val/2)
+	pc0=Vector(-a.val/2, a.val/2)
+	pc1=Vector(a.val/2, a.val/2)
+	pc2=Vector(a.val/2, -a.val/2)
+	pc3=Vector(-a.val/2, -a.val/2)
+	Draw.Register(gui, event, None)
 
-point =[float(i) for i in raw_input("write coord of left top angle:\n").split()]
-a=float(raw_input("write the praty of qard\n"))
+Draw.Register(pupBlock, event, None)
+#point =[float(i) for i in raw_input("write coord of left top angle:\n").split()]
+#a=float(raw_input("write the praty of qard\n"))
 
-p0=Vector(point[0],point[1])
-p1=Vector(point[0]+a,point[1])
-p2=Vector(point[0]+a,point[1]-a)
-p3=Vector(point[0],point[1]-a)
-mid=Vector(point[0]+a/2, point[1]-a/2)
+#p0=Vector(point[0],point[1])
+#p1=Vector(point[0]+a,point[1])
+#p2=Vector(point[0]+a,point[1]-a)
+#p3=Vector(point[0],point[1]-a)
+#mid=Vector(point[0]+a/2, point[1]-a/2)
 
-pc0=p0-mid
-pc1=p1-mid
-pc2=p2-mid
-pc3=p3-mid
-Draw.Register(gui, event,None)
+#pc0=p0-mid
+#pc1=p1-mid
+#pc2=p2-mid
+#pc3=p3-mid
+#Draw.Register(gui, event,None)
