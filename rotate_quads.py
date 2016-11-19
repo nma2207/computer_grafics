@@ -21,11 +21,11 @@ def changeA():
 	dk=da/(2*math.pi)
 	global changeColor,A,k,colorA,signK,signA;
 	if A>2*math.pi:
-		A-=math.pi*2
+		A=0
 		signA*=-1
 	if colorA>math.pi/2:
 		changeColor=True
-		colorA-=math.pi/2
+		colorA=0
 	if k>2 or k<1:
 		signK*=-1
 	A+=da
