@@ -15,7 +15,7 @@ def changeA():
 	global a
 	global d
 	a +=10
-	d+=.4
+	d+=.8
 	time.sleep(0.1)
 	Draw.Redraw(1)
 def key(evt,val):
@@ -47,6 +47,7 @@ def myCube():
 	glColor3f(1,1,0)
 	a_cube()
 	glPopMatrix()
+	glPushMatrix()
 	glRotatef(90,1,0,0)
 	glTranslatef(0,0,5)
 	glColor3f(1,0,1)
@@ -77,6 +78,7 @@ def myPrizma():
 	glColor3f(0,1,0)
 	a_prizma()
 	glPopMatrix()
+
 	glPushMatrix()
 	glTranslatef(0,z,0)
 	glRotatef(90,1,0,0)
@@ -88,10 +90,11 @@ def myPrizma():
 	glTranslatef(0,0,-2*z)
 	a_cube()
 
-	glColor3f(1,1,1)
-	glPopMatrix()
-	glPushMatrix()
 
+	glPopMatrix()
+
+	glPushMatrix()
+	glColor3f(1,1,1)
 	glRotatef(90,1,0,0)
 	glRotatef(60,0,1,0)
 	glTranslatef(0,0,z)
@@ -112,6 +115,19 @@ def myPrizma():
 	glRotatef(180,0,0,1)
 	glTranslatef(0,0,-2*z)
 	a_cube()
+def createMyCubeScene():
+	glPushMatrix()
+	glRotatef(a,1,1,0)
+	myPrizma()
+	glPopMatrix()
+	#glRotatef(-a,0,1,0)
+	glRotatef(a,0,0,1)
+	#glRotatef(60,1,0,0)
+	glTranslatef(0,30,0)
+	glPushMatrix()
+	glRotatef(2*d,1,0,1)
+	myCube()
+	glPopMatrix()
 
 
 def gui():
@@ -132,14 +148,14 @@ def gui():
 	glTranslatef(50,50,50)
 	glMatrixMode(GL_MODELVIEW)
 	glLoadIdentity()
-	#glRotatef(a,0,0,1)
+
 	glMultMatrixf(buf)
 
-	myPrizma()
+	createMyCubeScene()
 	#glMatrixMode(GL_MODELVIEW)
-	glTranslatef(a,0,0)
-	glRotatef(a,0,0,1)
-	glRotatef(2*a,0,1,0)
-	myCube()
+	#glTranslatef(50*math.cos(d),50*math.sin(d),0)
+
+	#glRotatef(2*a,0,1,0)
+
 	changeA()
 Draw.Register(gui,key,None)
