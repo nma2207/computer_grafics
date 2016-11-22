@@ -56,7 +56,7 @@ def myCube():
 	glRotatef(180,1,0,0)
 	glColor3f(0,1,1)
 	a_cube()
-
+	glPopMatrix()
 def a_prizma():
 	z=(3**0.5)*5
 	glBegin(GL_POLYGON)
@@ -115,16 +115,22 @@ def myPrizma():
 	glRotatef(180,0,0,1)
 	glTranslatef(0,0,-2*z)
 	a_cube()
+	glPopMatrix()
 def createMyCubeScene():
 	glPushMatrix()
+	glMatrixMode(GL_MODELVIEW)
+	glLoadIdentity()
+	#glPushMatrix()
 	glRotatef(a,1,1,0)
 	myPrizma()
 	glPopMatrix()
-	#glRotatef(-a,0,1,0)
+
+	glMatrixMode(GL_MODELVIEW)
+	glLoadIdentity()
 	glRotatef(a,0,0,1)
-	#glRotatef(60,1,0,0)
-	glTranslatef(0,30,0)
-	glPushMatrix()
+
+	glTranslatef(30,15,0)
+
 	glRotatef(2*d,1,0,1)
 	myCube()
 	glPopMatrix()
@@ -135,6 +141,7 @@ def gui():
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
 	glEnable(GL_DEPTH_TEST)
 	glViewport(0,0,1000,1000)
+	glPushMatrix()
 	glMatrixMode(GL_PROJECTION)
 	glLoadIdentity()
 #	glFrustum(-100,100,-100,100,30,500)
@@ -146,8 +153,6 @@ def gui():
 	buf=Buffer(GL_FLOAT,16,[v3,v2,v1,0,v3,-v2,v1,0,-v4,0,v1,0,0,0,0,1])
 	#glMultMatrixf(buf)
 	glTranslatef(50,50,50)
-	glMatrixMode(GL_MODELVIEW)
-	glLoadIdentity()
 
 	glMultMatrixf(buf)
 
