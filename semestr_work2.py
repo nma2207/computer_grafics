@@ -13,7 +13,7 @@ a=0
 sign=1
 r1=2
 r2=2
-buffP=Buffer(GL_FLOAT,4,[4.,20.,10,1.]) #initial position of LIGHT0 (proj coords)
+buffP=Buffer(GL_FLOAT,4,[2.,2.,5,1.]) #initial position of LIGHT0 (proj coords)
 def changeA():
 	global a,sign
 	d=0.03
@@ -38,7 +38,7 @@ def plane():
 def createMatr():	# creates shadow matrix that transforms the original triangles into its shadow
 	glLightfv(GL_LIGHT0,GL_POSITION,buffP)
 	glEnable(GL_LIGHT0)
-	mmat=Buffer(GL_FLOAT,16,[buffP[2],0, 4,10 , 0,buffP[2],0,4, -buffP[0],-buffP[1],10, -1,  10,4,10, buffP[2]])
+	mmat=Buffer(GL_FLOAT,16,[buffP[2],0, 0,0 , 0,buffP[2],0,0, -buffP[0],-buffP[1],0, -1,  0,0,0, buffP[2]])
 	glMultMatrixf(mmat)
 	#amb=Buffer(GL_FLOAT,4,(0,0,1,1.))
 	#glLightfv(GL_LIGHT0,GL_AMBIENT,amb)
@@ -62,31 +62,30 @@ def gui():
 	glLightfv(GL_LIGHT0,GL_POSITION,pos)
 	dif=Buffer(GL_FLOAT,4,(0.5,0.,0.,1))
 	glLightfv(GL_LIGHT0,GL_DIFFUSE,dif)
-	#spec=Buffer(GL_FLOAT,4,(0.5,.5,0.5 ,1))
-	#glLightfv(GL_LIGHT0,GL_SPECULAR,spec)
-	amb=Buffer(GL_FLOAT,4,(0,0,1,1.))
+	spec=Buffer(GL_FLOAT,4,(0.5,.5,0.5 ,1))
+	glLightfv(GL_LIGHT0,GL_SPECULAR,spec)
+	amb=Buffer(GL_FLOAT,4,(0.5,0.5,0.5,1))
 	glLightfv(GL_LIGHT0,GL_AMBIENT,amb)
 	glEnable(GL_COLOR_MATERIAL);
 	glColor3f(0,1,0)
-	glTranslatef(0,0,10)
+	#glTranslatef(0,0,10)
 	circle1()
 	circle2()
 	#glTranslatef(1,1,-10)
-
+	#glLoadIdentity()
+	glColor3f(1,1,1)
+	plane()
 	createMatr()
 	#glTranslatef(8,2.8,0)
-	glColor3f(.1,.1,0.1)
+
+	glColor3f(0,0,0)
 	circle1()
 	circle2()
+
 	#glColor3f(0,0,0
 
 	changeA()
-def createMatr():	# creates shadow matrix that transforms the original triangles into its shadow
-	glLightfv(GL_LIGHT0,GL_POSITION,buffP)
 
-	glEnable(GL_LIGHT0)
-	mmat=Buffer(GL_FLOAT,16,[buffP[2],0, 0,0 , 0,buffP[2],0,0, -buffP[0],-buffP[1],0, -1,  0,0,0, buffP[2]])
-	glMultMatrixf(mmat)
 def plane():
 	glBegin(GL_QUADS)
 	glVertex3f(-20,-20,-5)
@@ -97,7 +96,7 @@ def plane():
 
 def circle1():
 	glPushMatrix()
-	glTranslatef(-5-a/2,0,0)
+	glTranslatef(-a/2,0,0)
 	#glRotatef(20,1,1,1)
 	#glColor3f(0,1,0)
 	for ff in fs1:
@@ -118,7 +117,7 @@ def circle1():
 
 def circle2():
 	glPushMatrix()
-	glTranslatef(-5+a/2,0,0)
+	glTranslatef(+a/2,0,0)
 	#`glColor3f(1,0,0)
 	for ff in fs2:
 		if len(ff.verts)==4:
