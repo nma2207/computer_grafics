@@ -13,7 +13,7 @@ a=0
 sign=1
 r1=2
 r2=2
-buffP=Buffer(GL_FLOAT,4,[2.,2.,5,1.]) #initial position of LIGHT0 (proj coords)
+buffP=Buffer(GL_FLOAT,4,[-2.,-2.,3,1.]) #initial position of LIGHT0 (proj coords)
 def changeA():
 	global a,sign
 	d=0.03
@@ -38,6 +38,8 @@ def plane():
 def createMatr():	# creates shadow matrix that transforms the original triangles into its shadow
 	glLightfv(GL_LIGHT0,GL_POSITION,buffP)
 	glEnable(GL_LIGHT0)
+	spec=Buffer(GL_FLOAT,4,(0,0,0,1))
+	glLightfv(GL_LIGHT0,GL_SPECULAR,spec)
 	mmat=Buffer(GL_FLOAT,16,[buffP[2],0, 0,0 , 0,buffP[2],0,0, -buffP[0],-buffP[1],0, -1,  0,0,0, buffP[2]])
 	glMultMatrixf(mmat)
 	#amb=Buffer(GL_FLOAT,4,(0,0,1,1.))
@@ -58,11 +60,11 @@ def gui():
 	glOrtho(-10,10,-10,10,-500,500)
 	#glTranslatef(0,-5,5)
 	glEnable(GL_LIGHTING)
-	pos=Buffer(GL_FLOAT,4,(2,2,5,1))
-	glLightfv(GL_LIGHT0,GL_POSITION,pos)
+	pos=Buffer(GL_FLOAT,4,(-2,2,5,1))
+	glLightfv(GL_LIGHT0,GL_POSITION,buffP)
 	dif=Buffer(GL_FLOAT,4,(0.5,0.,0.,1))
 	glLightfv(GL_LIGHT0,GL_DIFFUSE,dif)
-	spec=Buffer(GL_FLOAT,4,(0.5,.5,0.5 ,1))
+	spec=Buffer(GL_FLOAT,4,(1,1,1 ,1))
 	glLightfv(GL_LIGHT0,GL_SPECULAR,spec)
 	amb=Buffer(GL_FLOAT,4,(0.5,0.5,0.5,1))
 	glLightfv(GL_LIGHT0,GL_AMBIENT,amb)
@@ -70,8 +72,9 @@ def gui():
 	glColor3f(0,1,0)
 	#glTranslatef(0,0,10)
 	circle1()
+	glColor3f(1,0,0)
 	circle2()
-	#glTranslatef(1,1,-10)
+	glTranslatef(0,0,-10)
 	#glLoadIdentity()
 	glColor3f(1,1,1)
 	plane()
